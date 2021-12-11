@@ -30,7 +30,7 @@ struct Card {
 }
 
 impl Card {
-    fn setup(numbers: Vec::<u32>, card_number: usize) -> Card {
+    pub fn setup(numbers: Vec::<u32>, card_number: usize) -> Card {
         if numbers.len() != 25 {
             panic!("Parsed input.txt incorrectly and have an incorrectly sized card. Aborting!");
         }
