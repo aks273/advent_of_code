@@ -29,25 +29,25 @@ struct Card {
     is_finished: bool,
 }
 
-fn setup_card(numbers: Vec::<u32>, card_number: usize) -> Card {
-    if numbers.len() != 25 {
-        panic!("Parsed input.txt incorrectly and have an incorrectly sized card. Aborting!");
-    }
-
-    let mut entries: [CardEntry; 25] = [CardEntry {number: 0, marked: false}; 25];
-
-    for (i, num) in numbers.into_iter().enumerate() {
-        entries[i].number = num;
-    }
-
-    Card {
-        index: card_number - 1,
-        entries: entries,
-        is_finished: false
-    }
-}
-
 impl Card {
+    fn setup(numbers: Vec::<u32>, card_number: usize) -> Card {
+        if numbers.len() != 25 {
+            panic!("Parsed input.txt incorrectly and have an incorrectly sized card. Aborting!");
+        }
+
+        let mut entries: [CardEntry; 25] = [CardEntry {number: 0, marked: false}; 25];
+
+        for (i, num) in numbers.into_iter().enumerate() {
+            entries[i].number = num;
+        }
+
+        Card {
+            index: card_number - 1,
+            entries: entries,
+            is_finished: false
+        }
+    }
+
     pub fn update(&mut self, number: u32) {
         if let Some(index) = self.contains(number) {
             self.entries[index].marked = true;
@@ -110,7 +110,7 @@ fn read_input_file() -> (Vec::<u32>, Vec::<Card>){
         // a new card
         else if (line_number - 1) % 6 == 0 {
             number_of_cards = number_of_cards + 1;
-            bingo_cards.push(setup_card(card_numbers.clone(), number_of_cards));
+            bingo_cards.push(Card::setup(card_numbers.clone(), number_of_cards));
             card_numbers = vec![];
         }
         // parse the next line of a bingo card
@@ -129,7 +129,7 @@ fn read_input_file() -> (Vec::<u32>, Vec::<Card>){
     // add a final card if we have a valid bingo card
     if card_numbers.len() == 25 {
         number_of_cards = number_of_cards + 1;
-        bingo_cards.push(setup_card(card_numbers.clone(), number_of_cards));
+        bingo_cards.push(Card::setup(card_numbers.clone(), number_of_cards));
     }
 
     (bingo_numbers, bingo_cards)
