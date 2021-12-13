@@ -14,18 +14,13 @@ struct LineSegment {
 }
 
 enum LineDir {
-    TopLeft,
-    TopRight,
-    BottomLeft,
-    BottomRight,
-    Up,
-    Down,
-    Left,
-    Right
+    Forwards,
+    Backwards,
+    Stationary
 }
 
 impl LineSegment {
-    pub fn create(segment_vec: Vec::<isize>) -> LineSegment {
+    pub fn create(segment_vec: &[isize]) -> LineSegment {
         if segment_vec.len() != 4 {
             panic!("Incorrect use of LineSegment::create");
         }
@@ -46,38 +41,31 @@ impl LineSegment {
         (self.x1 - self.x2).abs() == (self.y1 - self.y2).abs()
     }
 
-    pub fn line_dir(&self) -> Option<LineDir> {
-        // There must be a better way of doing this
-        if !(self.is_diagonal() || self.is_straight()) {
-            return None
-        }
+    pub fn length(&self) -> isize {
+        std::cmp::max(
+            (self.y1 - self.y2).abs(),
+            (self.x1 - self.x2).abs()
+        )
+    }
 
-        if self.x2 > self.x1 && self.y2 > self.y1 {
-            return Some(LineDir::TopRight)
+    pub fn x_dir(&self) -> LineDir {
+        if self.x1 > self.x2 {
+            LineDir::Backwards
+        } else if self.x1 < self.x2 {
+            LineDir::Forwards
+        } else {
+            LineDir::Stationary
         }
-        else if self.x2 > self.x1 && self.y2 < self.y1 {
-            return Some(LineDir::BottomRight)
-        }
-        else if self.x2 < self.x1 && self.y2 > self.y1 {
-            return Some(LineDir::TopLeft)
-        }
-        else if self.x2 < self.x1 && self.y2 < self.y1 {
-            return Some(LineDir::BottomLeft)
-        }
-        else if self.x1 == self.x2 && self.y2 > self.y1 {
-            return Some(LineDir::Up)
-        }
-        else if self.x1 == self.x2 && self.y2 < self.y1 {
-            return Some(LineDir::Down)
-        }
-        else if self.x1 > self.x2 && self.y2 == self.y1 {
-            return Some(LineDir::Left)
-        }
-        else if self.x1 < self.x2 && self.y2 == self.y1 {
-            return Some(LineDir::Right)
-        }
+    }
 
-        None
+    pub fn y_dir(&self) -> LineDir {
+        if self.y1 > self.y2 {
+            LineDir::Backwards
+        } else if self.y1 < self.y2 {
+            LineDir::Forwards
+        } else {
+            LineDir::Stationary
+        }
     }
 }
 
@@ -93,54 +81,28 @@ impl Map {
     }
 
     fn add_line(&mut self, segment: LineSegment) {
-        let dir = segment.line_dir().unwrap();
-        let length = std::cmp::max(
-            (segment.y1 - segment.y2).abs(),
-            (segment.x1 - segment.x2).abs()
-        );
+        let x_dir = segment.x_dir();
+        let y_dir = segment.y_dir();
+        let length = segment.length();
 
         let mut x = segment.x1 as usize;
         let mut y = segment.y1 as usize;
 
         self.points[x][y] = self.points[x][y] + 1;
         for _ in 0..length {
-            self.increment_point(&dir, &mut x, &mut y);
+            self.increment_point(&x_dir, &mut x);
+            self.increment_point(&y_dir, &mut y);
             self.points[x][y] = self.points[x][y] + 1;
         }
     }
 
-    fn increment_point(&self, dir: &LineDir, x: &mut usize, y: &mut usize) {
+    fn increment_point(&self, dir: &LineDir, point: &mut usize) {
         // There must be a better way of doing this
         // It would be nice is `for i in (100..1) { }` worked
         match dir {
-            LineDir::TopLeft => {
-                *x = *x - 1;
-                *y = *y + 1;
-            },
-            LineDir::TopRight => {
-                *x = *x + 1;
-                *y = *y + 1;
-            },
-            LineDir::BottomLeft => {
-                *x = *x - 1;
-                *y = *y - 1;
-            },
-            LineDir::BottomRight => {
-                *x = *x + 1;
-                *y = *y - 1;
-            },
-            LineDir::Left => {
-                *x = *x - 1;
-            },
-            LineDir::Right => {
-                *x = *x + 1;
-            },
-            LineDir::Up => {
-                *y = *y + 1;
-            },
-            LineDir::Down => {
-                *y = *y - 1;
-            },
+            LineDir::Forwards => *point = *point + 1,
+            LineDir::Backwards => *point = *point - 1,
+            LineDir::Stationary => ()
         }
     }
 
@@ -171,7 +133,7 @@ fn read_input_file() -> Vec::<LineSegment> {
             .map(|x| x.parse().expect("Failed to cast &str to u32"))
             .collect();
 
-        line_segments.push(LineSegment::create(line_segment_vec));
+        line_segments.push(LineSegment::create(&line_segment_vec));
     }
 
     line_segments
