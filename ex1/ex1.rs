@@ -1,7 +1,7 @@
 use std::io::Error;
 use std::fs;
 
-fn number_of_increases(input_vec: &Vec::<u32>) -> u32 {
+fn number_of_increases(input_vec: &[u32]) -> u32 {
     let mut number_of_increases = 0;
 
     for i in 1..input_vec.len() {
@@ -13,7 +13,7 @@ fn number_of_increases(input_vec: &Vec::<u32>) -> u32 {
     number_of_increases
 }
 
-fn sliding_window(input_vec: &Vec::<u32>) -> u32 {
+fn sliding_window(input_vec: &[u32]) -> u32 {
     // the final sliding window is centered on the penultimate element
     let max_index = input_vec.len() - 1;
 
