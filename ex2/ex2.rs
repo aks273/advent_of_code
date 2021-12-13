@@ -34,17 +34,14 @@ struct Move {
 }
 
 fn build_move(direction_str: &str, distance: i32) -> Move {
-    let direction: Direction = match direction_str {
+    let direction = match direction_str {
         "forward" => Direction::Forward,
         "up" => Direction::Up,
         "down" => Direction::Down,
         _ => panic!("Unknown direction in input.txt!")
     };
 
-    Move {
-        direction: direction,
-        distance: distance
-    }
+    Move { direction, distance }
 }
 
 // Used from the sum of all of the moves
@@ -73,7 +70,7 @@ fn get_displacement(moves_vec: &Vec::<Move>) -> Displacement {
 }
 
 // Part 2: use a concept of Aim where up and down are effectively angling the submarine
-fn get_aim_displacement(moves_vec: &Vec::<Move>) -> Displacement {
+fn get_aim_displacement(moves_vec: &[Move]) -> Displacement {
     let mut horizontal_displacement: i32 = 0;
     let mut vertical_displacement: i32 = 0;
     let mut aim: i32 = 0;
