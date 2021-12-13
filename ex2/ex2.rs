@@ -57,9 +57,9 @@ fn get_displacement(moves_vec: &Vec::<Move>) -> Displacement {
 
     for i in 0..moves_vec.len() {
         match moves_vec[i].direction {
-            Direction::Forward => horizontal_displacement = horizontal_displacement + moves_vec[i].distance,
-            Direction::Down => vertical_displacement = vertical_displacement + moves_vec[i].distance,
-            Direction::Up => vertical_displacement = vertical_displacement - moves_vec[i].distance,
+            Direction::Forward => horizontal_displacement += moves_vec[i].distance,
+            Direction::Down => vertical_displacement += moves_vec[i].distance,
+            Direction::Up => vertical_displacement -+ moves_vec[i].distance,
         }
     }
 
@@ -78,11 +78,11 @@ fn get_aim_displacement(moves_vec: &[Move]) -> Displacement {
     for i in 0..moves_vec.len() {
         match moves_vec[i].direction {
             Direction::Forward => {
-                horizontal_displacement = horizontal_displacement + moves_vec[i].distance;
-                vertical_displacement = vertical_displacement + (aim * moves_vec[i].distance);
+                horizontal_displacement += moves_vec[i].distance;
+                vertical_displacement += (aim * moves_vec[i].distance);
             },
-            Direction::Down => aim = aim + moves_vec[i].distance,
-            Direction::Up => aim = aim - moves_vec[i].distance,
+            Direction::Down => aim += moves_vec[i].distance,
+            Direction::Up => aim -= moves_vec[i].distance,
         }
     }
 

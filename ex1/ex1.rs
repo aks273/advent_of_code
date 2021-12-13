@@ -6,7 +6,7 @@ fn number_of_increases(input_vec: &[u32]) -> u32 {
 
     for i in 1..input_vec.len() {
         if input_vec[i] > input_vec[i - 1] {
-            number_of_increases = number_of_increases + 1;
+            number_of_increases += 1;
         }
     }
 
@@ -29,7 +29,7 @@ fn sliding_window(input_vec: &[u32]) -> u32 {
         // current_height = input_vec[i - 1] + input_vec[i] + input_vec[i + 1];
         
         if input_vec[i + 1] > input_vec[i - 2] {
-            number_of_increases = number_of_increases + 1;
+            number_of_increases += 1;
         }
     }
     

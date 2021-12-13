@@ -16,15 +16,15 @@ fn generate_input_vec() -> Result<Vec::<u32>, Error> {
     Ok(input_vec)
 }
 
-fn count_bit_columns(vec: &Vec::<u32>) -> [u32; 12] {
+fn count_bit_columns(vec: &[u32]) -> [u32; 12] {
     let mut final_array: [u32; BIT_LENGTH] = [0; BIT_LENGTH];
     
     // there are probably nicer ways to do this character by character, but i guess this
     // is O(N) because we just scan through once which is okay
-    for line in vec.iter() {
-        for i in 0..=BIT_LENGTH - 1 {
-            if *line & (1 << (BIT_LENGTH - i - 1)) != 0 {
-                final_array[i] = final_array[i] + 1;
+    for line in vec {
+        for i in 0..BIT_LENGTH {
+            if line & (1 << (BIT_LENGTH - i - 1)) != 0 {
+                final_array[i] += 1;
             }
         }
     }
