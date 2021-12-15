@@ -71,16 +71,16 @@ fn fill_basin_vec(
     // a better way than checking if they are in the basin, but this is even
     // more overhead which doesn't seem too neccesary.
     if x > 0 && map[y][x - 1] > map[y][x] && map[y][x - 1] < 9 { 
-        fill_basin_vec(&mut *basin_vec, map, x - 1, y, map_width, map_height);
+        fill_basin_vec(basin_vec, map, x - 1, y, map_width, map_height);
     }
     if y > 0 && map[y - 1][x] > map[y][x] && map[y - 1][x] < 9 { 
-        fill_basin_vec(&mut *basin_vec, map, x, y - 1, map_width, map_height);
+        fill_basin_vec(basin_vec, map, x, y - 1, map_width, map_height);
     }
     if x < map_width - 1 && map[y][x + 1] > map[y][x] && map[y][x + 1] < 9 { 
-        fill_basin_vec(&mut *basin_vec, map, x + 1, y, map_width, map_height);
+        fill_basin_vec(basin_vec, map, x + 1, y, map_width, map_height);
     }
     if y < map_height - 1 && map[y + 1][x] > map[y][x] && map[y + 1][x] < 9 { 
-        fill_basin_vec(&mut *basin_vec, map, x, y + 1, map_width, map_height);
+        fill_basin_vec(basin_vec, map, x, y + 1, map_width, map_height);
     }
 }
 
