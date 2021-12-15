@@ -47,8 +47,8 @@ fn calculate_if_minima(
 fn fill_basin_vec(
     basin_vec: &mut Vec::<(usize, usize)>, map: &Vec::<Vec::<u32>>, x: usize, y: usize, map_width: usize, map_height: usize
 ) {
-    // We "explore" the area around a minimum. If we have discovered it is
-    // already a minimum, stop as we definitely know it has already been
+    // We "explore" the area around a basin point. If we have discovered it is
+    // already a basin point, stop as we definitely know it has already been
     // explored
     if basin_vec.contains(&(x, y)) { return }
 
