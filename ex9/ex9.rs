@@ -61,8 +61,9 @@ fn fill_basin_vec(
     // We have to explore in four directions (left, down, up, right) for each
     // point within the basin.
     //
-    // This is a bit annoying because if a point is not part of a basin
-    // for example the 9 in the centre of
+    // This is a bit annoying because if a point is not part of a basin it can
+    // be explored multiple times.
+    // For example the 9 in the centre of
     //      219
     //      39X
     //      9XX
