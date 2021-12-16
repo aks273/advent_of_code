@@ -67,10 +67,13 @@ fn update_adjacent_levels(map: &mut Vec::<Vec::<u32>>, point: Point, number_of_f
         return
     }
 
+    // An initial point has flashed
     if map[point.y][point.x] == 10 {
         map[point.y][point.x] = 0;
     } else {
         map[point.y][point.x] += 1;
+        
+        // An adjacent point has flashed
         if map[point.y][point.x] == 10 {
             map[point.y][point.x] = 0;
         }
